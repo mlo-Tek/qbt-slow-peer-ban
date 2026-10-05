@@ -37,4 +37,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/mlo-tek/qbt-slowban-hotio:latest
+          tags: ghcr.io/mlo-tek/qbt-slow-peer-ban:latest

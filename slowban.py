@@ -451,7 +451,7 @@ def main() -> None:
     rotate_log_if_needed()
     if SLOWBAN_WARN_TIME >= SLOWBAN_THRESHOLD_TIME:
         raise RuntimeError("SLOWBAN_WARN_TIME must be lower than SLOWBAN_THRESHOLD_TIME")
-    log("Starting qbt-slowban-hotio helper", "INFO")
+    log("Starting qbt-slow-peer-ban helper", "INFO")
     log(f"Settings: threshold={SLOWBAN_THRESHOLD_TIME}s, warn_time={SLOWBAN_WARN_TIME}s, min_speed={SLOWBAN_MIN_SPEED}B/s, poll_interval={SLOWBAN_POLL_INTERVAL}s, summary_interval={SLOWBAN_SUMMARY_INTERVAL}s, dry_run={SLOWBAN_DRY_RUN}", "INFO")
     log(f"Time-sliced file logging enabled: dir={SLOWBAN_LOG_DIR}, rotation=2h, retention_days={SLOWBAN_LOG_RETENTION_DAYS}", "INFO")
     if SLOWBAN_CLEAR_PERIODICALLY:

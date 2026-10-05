@@ -1,10 +1,10 @@
 <CommunityApplications>
   <Profile>
-    Docker template for **qbt-slowban-hotio**, a lightweight sidecar that bans slow qBittorrent peers (including leechers on seeding torrents).
+    Docker template for **qbt-slow-peer-ban**, a lightweight helper container that bans slow qBittorrent peers (including leechers on seeding torrents).
     Community project with AI-assisted code. Works with hotio, binhex and other qBittorrent containers with a reachable WebUI. Report issues on the GitHub repository.
   </Profile>
-  <Icon>https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/assets/qbt-slowban.png</Icon>
-  <WebPage>https://github.com/mlo-Tek/qbt-slowban-hotio</WebPage>
+  <Icon>https://raw.githubusercontent.com/mlo-Tek/qbt-slow-peer-ban/main/assets/qbt-slow-peer-ban.png</Icon>
+  <WebPage>https://github.com/mlo-Tek/qbt-slow-peer-ban</WebPage>
   <!-- Add once the Unraid forum support thread exists:
   <Forum>https://forums.unraid.net/topic/YOUR_SUPPORT_TOPIC</Forum>
   -->

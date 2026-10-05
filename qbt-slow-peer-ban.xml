@@ -1,28 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Container version="2">
-  <Name>qbt-slowban</Name>
-  <Repository>ghcr.io/mlo-tek/qbt-slowban-hotio:latest</Repository>
-  <Registry>https://ghcr.io/mlo-tek/qbt-slowban-hotio</Registry>
+  <Name>qbt-slow-peer-ban</Name>
+  <Repository>ghcr.io/mlo-tek/qbt-slow-peer-ban:latest</Repository>
+  <Registry>https://ghcr.io/mlo-tek/qbt-slow-peer-ban</Registry>
   <Network>bridge</Network>
   <MyIP />
   <Shell />
   <Privileged>false</Privileged>
-  <Support>https://github.com/mlo-Tek/qbt-slowban-hotio</Support>
-  <Project>https://github.com/mlo-Tek/qbt-slowban-hotio</Project>
-  <ReadMe>https://github.com/mlo-Tek/qbt-slowban-hotio#readme</ReadMe>
-  <Overview>Sidecar helper for qBittorrent (hotio, binhex and others with a reachable WebUI). Watches the peers of active torrents, including seeding torrents with active upload, and bans peers that stay below a minimum speed. Warns after a configurable time, bans after a second one, can clear the manual ban list on a cron schedule, writes 2-hour log files and logs a periodic summary. Set QBT_URL, QBT_USERNAME and QBT_PASSWORD, then test with SLOWBAN_DRY_RUN=true first. Community project with AI-assisted code: review before use.</Overview>
+  <Support>https://github.com/mlo-Tek/qbt-slow-peer-ban</Support>
+  <Project>https://github.com/mlo-Tek/qbt-slow-peer-ban</Project>
+  <ReadMe>https://github.com/mlo-Tek/qbt-slow-peer-ban#readme</ReadMe>
+  <Overview>Helper container for qBittorrent (hotio, binhex and others with a reachable WebUI). Watches the peers of active torrents, including seeding torrents with active upload, and bans peers that stay below a minimum speed. Warns after a configurable time, bans after a second one, can clear the manual ban list on a cron schedule, writes 2-hour log files and logs a periodic summary. Set QBT_URL, QBT_USERNAME and QBT_PASSWORD, then test with SLOWBAN_DRY_RUN=true first. Community project with AI-assisted code: review before use.</Overview>
   <Category>Downloaders:</Category>
   <WebUI />
-  <TemplateURL>https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/my-qbt-slowban.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/assets/qbt-slowban.png</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/mlo-Tek/qbt-slow-peer-ban/main/qbt-slow-peer-ban.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/mlo-Tek/qbt-slow-peer-ban/main/assets/qbt-slow-peer-ban.png</Icon>
   <ExtraParams>--pids-limit 2048</ExtraParams>
   <PostArgs />
   <CPUset />
   <DonateText />
   <DonateLink />
   <Requires />
-  <Config Name="State Directory" Target="/state" Default="/mnt/user/appdata/qbt-slowban/state" Mode="rw" Description="Persistent state directory" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/qbt-slowban/state</Config>
-  <Config Name="Log Directory" Target="/logs" Default="/mnt/user/appdata/qbt-slowban/logs" Mode="rw" Description="Directory for 2-hour log files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/qbt-slowban/logs</Config>
+  <Config Name="State Directory" Target="/state" Default="/mnt/user/appdata/qbt-slow-peer-ban/state" Mode="rw" Description="Persistent state directory" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/qbt-slow-peer-ban/state</Config>
+  <Config Name="Log Directory" Target="/logs" Default="/mnt/user/appdata/qbt-slow-peer-ban/logs" Mode="rw" Description="Directory for 2-hour log files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/qbt-slow-peer-ban/logs</Config>
   <Config Name="QBT_URL" Target="QBT_URL" Default="http://192.168.1.100:8080" Mode="" Description="qBittorrent WebUI URL. Change this to your qBittorrent address." Type="Variable" Display="always" Required="true" Mask="false">http://192.168.1.100:8080</Config>
   <Config Name="QBT_USERNAME" Target="QBT_USERNAME" Default="" Mode="" Description="qBittorrent username" Type="Variable" Display="always" Required="true" Mask="false" />
   <Config Name="QBT_PASSWORD" Target="QBT_PASSWORD" Default="" Mode="" Description="qBittorrent password" Type="Variable" Display="always" Required="true" Mask="true" />

@@ -1,6 +1,6 @@
 FROM python:3.12-alpine
 
-LABEL org.opencontainers.image.source="https://github.com/mlo-Tek/qbt-slowban-hotio"
+LABEL org.opencontainers.image.source="https://github.com/mlo-Tek/qbt-slow-peer-ban"
 
 RUN pip install --no-cache-dir requests
 

@@ -1,7 +1,7 @@
 services:
-  qbt-slowban:
-    image: ghcr.io/mlo-tek/qbt-slowban-hotio:latest
-    container_name: qbt-slowban
+  qbt-slow-peer-ban:
+    image: ghcr.io/mlo-tek/qbt-slow-peer-ban:latest
+    container_name: qbt-slow-peer-ban
     restart: unless-stopped
     pids_limit: 2048
     env_file: .env

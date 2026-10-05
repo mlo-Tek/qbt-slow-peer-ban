@@ -1,19 +1,19 @@
-# qbt-slowban for hotio/qbittorrent (Docker / Docker Compose)
+# qbt-slowban for qBittorrent (Docker, Docker Compose & Unraid)
 
 > [!WARNING]
 > ⚠️ **AI-assisted project**
 >
-> This project, including portions of the Python implementation, Docker setup, and documentation, was created with substantial assistance from **OpenAI ChatGPT** and subsequently reviewed and adapted for the intended setup.
+> This project, including portions of the Python implementation, Docker/Unraid setup, and documentation, was created with substantial assistance from **OpenAI ChatGPT** and subsequently reviewed and adapted for the intended setup.
 >
 > AI-generated or AI-assisted code can contain defects. Review the code and test it in your own environment before relying on it.
 
-A lightweight Python sidecar for **hotio/qbittorrent**, run with Docker or Docker Compose.
+A lightweight Python sidecar for **qBittorrent** (e.g. hotio, binhex or any container with a reachable WebUI), run with Docker, Docker Compose or Unraid.
 
 This repository is a fork of [`TechClusterHQ/qbt-slowban`](https://github.com/TechClusterHQ/qbt-slowban), adapted from the original LinuxServer.io Docker Mod approach to run as a standalone sidecar container for hotio/qbittorrent.
 
 ## Features
 
-- Designed as a separate sidecar container for hotio/qbittorrent
+- Separate sidecar container for qBittorrent (hotio, binhex, ...), works with Docker, Docker Compose and Unraid
 - Uses the qBittorrent Web API
 - Tracks slow peers per torrent
 - Also scans seeding torrents with active upload (leechers downloading slowly from you), not only downloading torrents
@@ -51,6 +51,8 @@ qbt-slowban-hotio/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .env.example
+├── my-qbt-slowban.xml      (Unraid template)
+├── assets/                 (template icon)
 ├── README.md
 ├── SECURITY.md
 └── .gitignore
@@ -97,6 +99,27 @@ docker run -d --name qbt-slowban --restart unless-stopped \
   -v "$PWD/state:/state" -v "$PWD/logs:/logs" \
   ghcr.io/mlo-tek/qbt-slowban-hotio:latest
 ```
+
+### Unraid
+
+Create the appdata directories:
+
+```bash
+mkdir -p /mnt/cache/appdata/qbt-slowban/{state,logs}
+```
+
+Download the Unraid template into the user-template directory:
+
+```bash
+curl -L https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/my-qbt-slowban.xml \
+  -o /boot/config/plugins/dockerMan/templates-user/my-qbt-slowban.xml
+```
+
+Then open the Unraid Docker page, choose **Add Container** and select the `qbt-slowban` template. The image is pulled from GHCR, so no further files are needed.
+
+Set at minimum `QBT_URL`, `QBT_USERNAME` and `QBT_PASSWORD`. The template uses the `bridge` network by default; adjust it if your qBittorrent is on a custom network. Start the container and inspect its log.
+
+Alternatively, Unraid users can run the Docker Compose file above via the Compose Manager plugin.
 
 ### Build locally
 
@@ -148,9 +171,9 @@ Log files are split into 2-hour time slots.
 
 ## Security
 
-Do **not** commit a populated `.env` or compose file containing your real qBittorrent username, password, internal IP addresses, or other private configuration.
+Do **not** commit a populated `.env`, compose file or Unraid XML template containing your real qBittorrent username, password, internal IP addresses, or other private configuration.
 
-`.env.example` intentionally contains only generic example values and `.env` is git-ignored.
+`.env.example` and the Unraid template intentionally contain only generic example values; `.env` is git-ignored.
 
 See [`SECURITY.md`](SECURITY.md) for additional notes.
 

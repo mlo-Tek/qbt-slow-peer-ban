@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Set
 import requests
 
 
-QBT_URL = os.environ.get("QBT_URL", "http://10.20.20.15:8080").rstrip("/")
+QBT_URL = os.environ.get("QBT_URL", "http://localhost:8080").rstrip("/")
 QBT_USERNAME = os.environ.get("QBT_USERNAME", "")
 QBT_PASSWORD = os.environ.get("QBT_PASSWORD", "")
 QBT_API_KEY = os.environ.get("QBT_API_KEY", "").strip()

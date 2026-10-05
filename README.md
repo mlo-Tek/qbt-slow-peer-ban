@@ -33,7 +33,7 @@ All settings are environment variables. You must set `QBT_URL` and **one** qBitt
 
 | Variable | Built-in default | Required? | Meaning |
 |---|---:|---|---|
-| `QBT_URL` | `http://10.20.20.15:8080` | **Required** | qBittorrent WebUI URL. The built-in default is only a placeholder, always set your own |
+| `QBT_URL` | `http://localhost:8080` | **Required** | qBittorrent WebUI URL. The built-in default is only a placeholder; set the address of your qBittorrent |
 | `QBT_USERNAME` / `QBT_PASSWORD` | empty | **Login required**: set these **or** `QBT_API_KEY` | qBittorrent login. Use together; not allowed with `QBT_API_KEY` |
 | `QBT_API_KEY` | empty | **Login required**: set this **or** username + password | qBittorrent API key, needs qBittorrent 5.2.0+. Not allowed together with username/password |
 | `SLOWBAN_MIN_SPEED` | `100000` B/s (100 kB/s) | Optional | Peers downloading slower than this (but above 0) count as slow |

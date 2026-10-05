@@ -50,7 +50,7 @@ All settings are environment variables. Only `QBT_URL`, `QBT_USERNAME` and `QBT_
 | `SLOWBAN_DRY_RUN` | `false` | Only log what would happen, never ban |
 | `SLOWBAN_STATE_FILE` | `/state/slowban_state.json` | Persistent state file |
 
-The Unraid template ships with warning after **45 s**, ban after **90 s** and the periodic unban set to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**, while qBittorrent's WebUI shows kB/s: multiply the kB/s value by 1000 (`100000` = 100 kB/s, `50000` = 50 kB/s).
+The Unraid template uses the same defaults and additionally sets the periodic unban to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**, while qBittorrent's WebUI shows kB/s: multiply the kB/s value by 1000 (`100000` = 100 kB/s, `50000` = 50 kB/s).
 
 ## Repository layout
 

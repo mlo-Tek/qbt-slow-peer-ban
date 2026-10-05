@@ -13,7 +13,7 @@ slowban_state.json
 # Secrets / local overrides
 .env
 .env.*
-*.local.xml
+!.env.example
 
 # OS/editor
 .DS_Store

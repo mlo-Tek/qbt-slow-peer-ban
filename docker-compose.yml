@@ -1,0 +1,14 @@
+services:
+  qbt-slowban:
+    image: ghcr.io/mlo-tek/qbt-slowban-hotio:latest
+    container_name: qbt-slowban
+    restart: unless-stopped
+    pids_limit: 2048
+    env_file: .env
+    environment:
+      TZ: Europe/Berlin
+      SLOWBAN_STATE_FILE: /state/slowban_state.json
+      SLOWBAN_LOG_DIR: /logs
+    volumes:
+      - ./state:/state
+      - ./logs:/logs

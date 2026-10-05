@@ -29,12 +29,13 @@ This is an independent helper container implementation. The idea of banning slow
 
 ## Default settings
 
-All settings are environment variables. Only `QBT_URL`, `QBT_USERNAME` and `QBT_PASSWORD` normally need to be set. Everything else is optional. Details and examples are in [Configuration reference](#configuration-reference).
+All settings are environment variables. Normally only `QBT_URL` and the qBittorrent login need to be set: either `QBT_USERNAME` + `QBT_PASSWORD`, **or** `QBT_API_KEY`. Everything else is optional. Details and examples are in [Configuration reference](#configuration-reference).
 
 | Variable | Built-in default | Meaning |
 |---|---:|---|
 | `QBT_URL` | `http://10.20.20.15:8080` | qBittorrent WebUI URL (always set this) |
-| `QBT_USERNAME` / `QBT_PASSWORD` | empty | qBittorrent login |
+| `QBT_USERNAME` / `QBT_PASSWORD` | empty | qBittorrent login (alternative to `QBT_API_KEY`) |
+| `QBT_API_KEY` | empty | qBittorrent API key, needs qBittorrent 5.2.0+ (alternative to username/password) |
 | `SLOWBAN_MIN_SPEED` | `100000` B/s (100 kB/s) | Peers downloading slower than this (but above 0) count as slow |
 | `SLOWBAN_WARN_TIME` | `90` s | Warning after this long below the minimum speed |
 | `SLOWBAN_THRESHOLD_TIME` | `180` s | Ban after this long below the minimum speed |
@@ -84,7 +85,7 @@ The image is published to GHCR as `ghcr.io/mlo-tek/qbt-slow-peer-ban:latest`.
    curl -L https://raw.githubusercontent.com/mlo-Tek/qbt-slow-peer-ban/main/.env.example -o .env
    ```
 
-2. Edit `.env` and set at minimum `QBT_URL`, `QBT_USERNAME` and `QBT_PASSWORD`.
+2. Edit `.env` and set at minimum `QBT_URL` and **either** `QBT_USERNAME` + `QBT_PASSWORD` **or** `QBT_API_KEY` (not both, see [Authentication](#authentication)).
 
 3. Start it and inspect the log:
 
@@ -129,7 +130,7 @@ curl -L https://raw.githubusercontent.com/mlo-Tek/qbt-slow-peer-ban/main/qbt-slo
 
 Then open the Unraid Docker page, choose **Add Container** and select the `qbt-slow-peer-ban` template. The image is pulled from GHCR, so no further files are needed.
 
-Set at minimum `QBT_URL`, `QBT_USERNAME` and `QBT_PASSWORD`. The template uses the `bridge` network by default; adjust it if your qBittorrent is on a custom network. Start the container and inspect its log.
+Set at minimum `QBT_URL` and **either** `QBT_USERNAME` + `QBT_PASSWORD` **or** `QBT_API_KEY` (not both). The template uses the `bridge` network by default; adjust it if your qBittorrent is on a custom network. Start the container and inspect its log.
 
 Alternatively, Unraid users can run the Docker Compose file above via the Compose Manager plugin.
 
@@ -145,6 +146,29 @@ docker build -t qbt-slow-peer-ban .
 
 - `QBT_URL` — address of the qBittorrent WebUI/API, e.g. `http://192.168.1.100:8080`.
 - `QBT_USERNAME`, `QBT_PASSWORD` — WebUI login.
+- `QBT_API_KEY` — API key instead of a login (qBittorrent 5.2.0 or newer).
+
+#### Authentication
+
+Choose **one** of the two methods:
+
+| Method | Variables | Works with |
+|---|---|---|
+| Username + password | `QBT_USERNAME`, `QBT_PASSWORD` | all qBittorrent versions |
+| API key | `QBT_API_KEY` | qBittorrent 5.2.0+ |
+
+The two methods are **mutually exclusive**. If `QBT_API_KEY` is set together with `QBT_USERNAME` or `QBT_PASSWORD`, the container refuses to start and logs `Set either QBT_API_KEY or QBT_USERNAME/QBT_PASSWORD, not both.` Leave the unused variables empty or remove them.
+
+To create an API key, open the qBittorrent WebUI, go to **Preferences → WebUI → API Key** and generate one. The key starts with `qbt_`. qBittorrent keeps only one key at a time; generating a new one invalidates the old key, so update `QBT_API_KEY` afterwards.
+
+Example:
+
+```text
+QBT_URL=http://192.168.1.100:8080
+QBT_API_KEY=qbt_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+If qBittorrent allows access without authentication for your network (localhost or subnet bypass), you can leave all three variables empty.
 
 ### Slow-peer detection
 

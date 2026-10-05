@@ -12,6 +12,7 @@ import requests
 QBT_URL = os.environ.get("QBT_URL", "http://10.20.20.15:8080").rstrip("/")
 QBT_USERNAME = os.environ.get("QBT_USERNAME", "")
 QBT_PASSWORD = os.environ.get("QBT_PASSWORD", "")
+QBT_API_KEY = os.environ.get("QBT_API_KEY", "").strip()
 
 SLOWBAN_THRESHOLD_TIME = int(os.environ.get("SLOWBAN_THRESHOLD_TIME", "180"))
 SLOWBAN_WARN_TIME = int(os.environ.get("SLOWBAN_WARN_TIME", "90"))
@@ -190,7 +191,28 @@ def save_state(state: Dict[str, Any]) -> None:
     os.replace(tmp_file, SLOWBAN_STATE_FILE)
 
 
+def validate_auth_config() -> None:
+    """Allow either username/password or an API key, never both."""
+    if QBT_API_KEY and (QBT_USERNAME or QBT_PASSWORD):
+        raise RuntimeError(
+            "Set either QBT_API_KEY or QBT_USERNAME/QBT_PASSWORD, not both."
+        )
+
+
+def login_with_api_key() -> None:
+    # API keys (qBittorrent >= 5.2.0) are sent as a Bearer token on every request.
+    # They cannot be used on /auth/login, so there is no session to create.
+    session.headers["Authorization"] = f"Bearer {QBT_API_KEY}"
+    probe = session.get(f"{QBT_URL}/api/v2/app/version", timeout=15)
+    if not (200 <= probe.status_code < 300):
+        raise RuntimeError(f"API key authentication failed: HTTP {probe.status_code}: {probe.text}")
+    log(f"Authenticated against qBittorrent at {QBT_URL} using an API key (HTTP {probe.status_code}, qBittorrent {probe.text.strip()})", "INFO")
+
+
 def login() -> None:
+    if QBT_API_KEY:
+        login_with_api_key()
+        return
     response = session.post(
         f"{QBT_URL}/api/v2/auth/login",
         data={"username": QBT_USERNAME, "password": QBT_PASSWORD},
@@ -459,6 +481,7 @@ def main() -> None:
     if SLOWBAN_BANNED_PEERS:
         log(f"Permanent banned peers configured: {SLOWBAN_BANNED_PEERS}", "INFO")
 
+    validate_auth_config()
     state = load_state()
     login()
 

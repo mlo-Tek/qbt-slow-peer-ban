@@ -29,27 +29,27 @@ This is an independent helper container implementation. The idea of banning slow
 
 ## Default settings
 
-All settings are environment variables. Normally only `QBT_URL` and the qBittorrent login need to be set: either `QBT_USERNAME` + `QBT_PASSWORD`, **or** `QBT_API_KEY`. Everything else is optional. Details and examples are in [Configuration reference](#configuration-reference).
+All settings are environment variables. You must set `QBT_URL` and **one** qBittorrent login method: either `QBT_USERNAME` + `QBT_PASSWORD`, **or** `QBT_API_KEY` (never both). Everything else is optional and has a sensible default. Details and examples are in [Configuration reference](#configuration-reference).
 
-| Variable | Built-in default | Meaning |
-|---|---:|---|
-| `QBT_URL` | `http://10.20.20.15:8080` | qBittorrent WebUI URL (always set this) |
-| `QBT_USERNAME` / `QBT_PASSWORD` | empty | qBittorrent login (alternative to `QBT_API_KEY`) |
-| `QBT_API_KEY` | empty | qBittorrent API key, needs qBittorrent 5.2.0+ (alternative to username/password) |
-| `SLOWBAN_MIN_SPEED` | `100000` B/s (100 kB/s) | Peers downloading slower than this (but above 0) count as slow |
-| `SLOWBAN_WARN_TIME` | `90` s | Warning after this long below the minimum speed |
-| `SLOWBAN_THRESHOLD_TIME` | `180` s | Ban after this long below the minimum speed |
-| `SLOWBAN_POLL_INTERVAL` | `10` s | How often qBittorrent is checked |
-| `SLOWBAN_SUMMARY_INTERVAL` | `600` s | How often a status summary is logged |
-| `SLOWBAN_CLEAR_PERIODICALLY` | empty (off) | Cron schedule to clear the manual ban list |
-| `SLOWBAN_BANNED_PEERS` | empty | Peers kept banned when the list is cleared |
-| `SLOWBAN_LOG_LEVEL` | `INFO` | Minimum level that is logged |
-| `SLOWBAN_LOG_DIR` | `/logs` | Directory for the log files |
-| `SLOWBAN_LOG_RETENTION_DAYS` | `7` | Log files older than this are deleted |
-| `SLOWBAN_LOG_UNBAN_DETAILS` | `false` | Log every peer that is unbanned |
-| `SLOWBAN_COLOR_LOGS` | `true` | Colored console output |
-| `SLOWBAN_DRY_RUN` | `false` | Only log what would happen, never ban |
-| `SLOWBAN_STATE_FILE` | `/state/slowban_state.json` | Persistent state file |
+| Variable | Built-in default | Required? | Meaning |
+|---|---:|---|---|
+| `QBT_URL` | `http://10.20.20.15:8080` | **Required** | qBittorrent WebUI URL. The built-in default is only a placeholder, always set your own |
+| `QBT_USERNAME` / `QBT_PASSWORD` | empty | **Login required**: set these **or** `QBT_API_KEY` | qBittorrent login. Use together; not allowed with `QBT_API_KEY` |
+| `QBT_API_KEY` | empty | **Login required**: set this **or** username + password | qBittorrent API key, needs qBittorrent 5.2.0+. Not allowed together with username/password |
+| `SLOWBAN_MIN_SPEED` | `100000` B/s (100 kB/s) | Optional | Peers downloading slower than this (but above 0) count as slow |
+| `SLOWBAN_WARN_TIME` | `90` s | Optional | Warning after this long below the minimum speed |
+| `SLOWBAN_THRESHOLD_TIME` | `180` s | Optional | Ban after this long below the minimum speed |
+| `SLOWBAN_POLL_INTERVAL` | `10` s | Optional | How often qBittorrent is checked |
+| `SLOWBAN_SUMMARY_INTERVAL` | `600` s | Optional | How often a status summary is logged |
+| `SLOWBAN_CLEAR_PERIODICALLY` | empty (off) | Optional | Cron schedule to clear the manual ban list |
+| `SLOWBAN_BANNED_PEERS` | empty | Optional | Peers kept banned when the list is cleared |
+| `SLOWBAN_LOG_LEVEL` | `INFO` | Optional | Minimum level that is logged |
+| `SLOWBAN_LOG_DIR` | `/logs` | Optional | Directory for the log files |
+| `SLOWBAN_LOG_RETENTION_DAYS` | `7` | Optional | Log files older than this are deleted |
+| `SLOWBAN_LOG_UNBAN_DETAILS` | `false` | Optional | Log every peer that is unbanned |
+| `SLOWBAN_COLOR_LOGS` | `true` | Optional | Colored console output |
+| `SLOWBAN_DRY_RUN` | `false` | Optional | Only log what would happen, never ban |
+| `SLOWBAN_STATE_FILE` | `/state/slowban_state.json` | Optional | Persistent state file |
 
 The Unraid template uses the same defaults and additionally sets the periodic unban to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**, while qBittorrent's WebUI shows kB/s: multiply the kB/s value by 1000 (`100000` = 100 kB/s, `50000` = 50 kB/s).
 

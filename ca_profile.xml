@@ -1,7 +1,7 @@
 <CommunityApplications>
   <Profile>
     Docker template for **qbt-slowban-hotio**, a lightweight sidecar that bans slow qBittorrent peers (including leechers on seeding torrents).
-    Community project with AI-assisted code, tested with hotio/qbittorrent. Report issues on the GitHub repository.
+    Community project with AI-assisted code. Works with hotio, binhex and other qBittorrent containers with a reachable WebUI. Report issues on the GitHub repository.
   </Profile>
   <Icon>https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/assets/qbt-slowban.png</Icon>
   <WebPage>https://github.com/mlo-Tek/qbt-slowban-hotio</WebPage>

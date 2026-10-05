@@ -7,13 +7,13 @@
 >
 > AI-generated or AI-assisted code can contain defects. Review the code and test it in your own environment before relying on it.
 
-A lightweight Python sidecar for **qBittorrent** (developed and tested with hotio/qbittorrent; other qBittorrent containers with a reachable WebUI should work but are untested), run with Docker, Docker Compose or Unraid.
+A lightweight Python sidecar for **qBittorrent** (developed with hotio/qbittorrent and reported to work with binhex/arch-qbittorrentvpn; any qBittorrent container with a reachable WebUI should work), run with Docker, Docker Compose or Unraid.
 
-This repository is a fork of [`TechClusterHQ/qbt-slowban`](https://github.com/TechClusterHQ/qbt-slowban), adapted from the original LinuxServer.io Docker Mod approach to run as a standalone sidecar container for hotio/qbittorrent.
+This is an independent sidecar implementation. The idea of banning slow peers was inspired by [`TechClusterHQ/qbt-slowban`](https://github.com/TechClusterHQ/qbt-slowban), a LinuxServer.io Docker Mod; this project does not depend on it and runs as a standalone container.
 
 ## Features
 
-- Separate sidecar container for qBittorrent (tested with hotio/qbittorrent), runs with Docker, Docker Compose and Unraid
+- Separate sidecar container for qBittorrent (hotio, binhex, ...), runs with Docker, Docker Compose and Unraid
 - Uses the qBittorrent Web API
 - Tracks slow peers per torrent
 - Also scans seeding torrents with active upload (leechers downloading slowly from you), not only downloading torrents
@@ -63,6 +63,8 @@ qbt-slowban-hotio/
 ├── .env.example
 ├── my-qbt-slowban.xml      (Unraid template)
 ├── assets/                 (template icon)
+├── ca_profile.xml          (Unraid Community Applications profile)
+├── LICENSE
 ├── README.md
 ├── SECURITY.md
 └── .gitignore
@@ -188,6 +190,10 @@ Do **not** commit a populated `.env`, compose file or Unraid XML template contai
 `.env.example` and the Unraid template intentionally contain only generic example values; `.env` is git-ignored.
 
 See [`SECURITY.md`](SECURITY.md) for additional notes.
+
+## License
+
+MIT, see [`LICENSE`](LICENSE).
 
 ## Disclaimer
 

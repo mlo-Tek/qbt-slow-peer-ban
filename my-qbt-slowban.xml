@@ -10,7 +10,7 @@
   <Support>https://github.com/mlo-Tek/qbt-slowban-hotio</Support>
   <Project>https://github.com/mlo-Tek/qbt-slowban-hotio</Project>
   <ReadMe>https://github.com/mlo-Tek/qbt-slowban-hotio#readme</ReadMe>
-  <Overview>Sidecar helper for qBittorrent (tested with hotio/qbittorrent). Watches the peers of active torrents, including seeding torrents with active upload, and bans peers that stay below a minimum speed. Warns after a configurable time, bans after a second one, can clear the manual ban list on a cron schedule, writes 2-hour log files and logs a periodic summary. Set QBT_URL, QBT_USERNAME and QBT_PASSWORD, then test with SLOWBAN_DRY_RUN=true first. Community project with AI-assisted code: review before use.</Overview>
+  <Overview>Sidecar helper for qBittorrent (hotio, binhex and others with a reachable WebUI). Watches the peers of active torrents, including seeding torrents with active upload, and bans peers that stay below a minimum speed. Warns after a configurable time, bans after a second one, can clear the manual ban list on a cron schedule, writes 2-hour log files and logs a periodic summary. Set QBT_URL, QBT_USERNAME and QBT_PASSWORD, then test with SLOWBAN_DRY_RUN=true first. Community project with AI-assisted code: review before use.</Overview>
   <Category>Downloaders:</Category>
   <WebUI />
   <TemplateURL>https://raw.githubusercontent.com/mlo-Tek/qbt-slowban-hotio/main/my-qbt-slowban.xml</TemplateURL>

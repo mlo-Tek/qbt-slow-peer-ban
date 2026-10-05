@@ -9,7 +9,7 @@ import slowban
 
 _original_get = requests.Session.get
 _TORRENTS_INFO_PATH = "/api/v2/torrents/info"
-_TORRENTS_INFO_FILTER = "downloading"
+_TORRENTS_INFO_FILTER = "active"
 
 
 def resilient_get(self: requests.Session, url: str, **kwargs: Any) -> requests.Response:

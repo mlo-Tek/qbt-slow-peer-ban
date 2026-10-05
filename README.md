@@ -16,6 +16,7 @@ This repository is a fork of [`TechClusterHQ/qbt-slowban`](https://github.com/Te
 - Designed as a separate sidecar container for hotio/qbittorrent
 - Uses the qBittorrent Web API
 - Tracks slow peers per torrent
+- Also scans seeding torrents with active upload (leechers downloading slowly from you), not only downloading torrents
 - Warning before a ban is applied
 - Persistent state across container restarts
 - Scheduled clearing of the qBittorrent manual ban list

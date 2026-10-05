@@ -221,15 +221,21 @@ def is_peer_scan_candidate(torrent: Dict[str, Any]) -> bool:
     thousands of completed/seeding torrents that makes qBittorrent do thousands of
     expensive sync calls every poll. Prefer explicit active download states, while
     retaining a conservative fallback for future qBittorrent states.
+
+    Seeding torrents with active upload ("uploading", "forcedUP") are scanned too,
+    because leechers can download slowly from us there. Idle/queued/paused upload
+    states (stalledUP, queuedUP, ...) are still skipped.
     """
     state = str(torrent.get("state", "") or "")
-    active_download_states = {"downloading", "stalledDL", "forcedDL", "metaDL"}
+    active_download_states = {
+        "downloading", "stalledDL", "forcedDL", "metaDL", "uploading", "forcedUP",
+    }
     if state in active_download_states:
         return True
 
     # States that cannot provide peers useful to slowban right now.
     inactive_or_upload_states = {
-        "uploading", "stalledUP", "forcedUP", "queuedUP", "checkingUP",
+        "stalledUP", "queuedUP", "checkingUP",
         "pausedUP", "stoppedUP", "pausedDL", "stoppedDL", "queuedDL",
         "checkingDL", "checkingResumeData", "moving", "error", "missingFiles",
         "allocating",

@@ -7,13 +7,13 @@
 >
 > AI-generated or AI-assisted code can contain defects. Review the code and test it in your own environment before relying on it.
 
-A lightweight Python sidecar for **qBittorrent** (e.g. hotio, binhex or any container with a reachable WebUI), run with Docker, Docker Compose or Unraid.
+A lightweight Python sidecar for **qBittorrent** (developed and tested with hotio/qbittorrent; other qBittorrent containers with a reachable WebUI should work but are untested), run with Docker, Docker Compose or Unraid.
 
 This repository is a fork of [`TechClusterHQ/qbt-slowban`](https://github.com/TechClusterHQ/qbt-slowban), adapted from the original LinuxServer.io Docker Mod approach to run as a standalone sidecar container for hotio/qbittorrent.
 
 ## Features
 
-- Separate sidecar container for qBittorrent (hotio, binhex, ...), works with Docker, Docker Compose and Unraid
+- Separate sidecar container for qBittorrent (tested with hotio/qbittorrent), runs with Docker, Docker Compose and Unraid
 - Uses the qBittorrent Web API
 - Tracks slow peers per torrent
 - Also scans seeding torrents with active upload (leechers downloading slowly from you), not only downloading torrents

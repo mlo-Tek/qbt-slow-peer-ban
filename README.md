@@ -35,7 +35,7 @@ All settings are environment variables. Only `QBT_URL`, `QBT_USERNAME` and `QBT_
 |---|---:|---|
 | `QBT_URL` | `http://10.20.20.15:8080` | qBittorrent WebUI URL (always set this) |
 | `QBT_USERNAME` / `QBT_PASSWORD` | empty | qBittorrent login |
-| `SLOWBAN_MIN_SPEED` | `50768` B/s | Peers slower than this count as slow |
+| `SLOWBAN_MIN_SPEED` | `100000` B/s (100 kB/s) | Peers downloading slower than this (but above 0) count as slow |
 | `SLOWBAN_WARN_TIME` | `90` s | Warning after this long below the minimum speed |
 | `SLOWBAN_THRESHOLD_TIME` | `180` s | Ban after this long below the minimum speed |
 | `SLOWBAN_POLL_INTERVAL` | `10` s | How often qBittorrent is checked |
@@ -50,7 +50,7 @@ All settings are environment variables. Only `QBT_URL`, `QBT_USERNAME` and `QBT_
 | `SLOWBAN_DRY_RUN` | `false` | Only log what would happen, never ban |
 | `SLOWBAN_STATE_FILE` | `/state/slowban_state.json` | Persistent state file |
 
-The Unraid template ships with warning after **45 s**, ban after **90 s** and the periodic unban set to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**: `50768` is about 50 KB/s, `100000` is about 100 KB/s.
+The Unraid template ships with warning after **45 s**, ban after **90 s** and the periodic unban set to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**, while qBittorrent's WebUI shows kB/s: multiply the kB/s value by 1000 (`100000` = 100 kB/s, `50000` = 50 kB/s).
 
 ## Repository layout
 

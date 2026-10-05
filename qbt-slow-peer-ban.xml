@@ -28,7 +28,7 @@
   <Config Name="QBT_PASSWORD" Target="QBT_PASSWORD" Default="" Mode="" Description="qBittorrent password" Type="Variable" Display="always" Required="true" Mask="true" />
   <Config Name="SLOWBAN_THRESHOLD_TIME" Target="SLOWBAN_THRESHOLD_TIME" Default="90" Mode="" Description="Seconds a peer may stay below the minimum speed before ban" Type="Variable" Display="always" Required="true" Mask="false">90</Config>
   <Config Name="SLOWBAN_WARN_TIME" Target="SLOWBAN_WARN_TIME" Default="45" Mode="" Description="Seconds below threshold before logging a warning" Type="Variable" Display="always" Required="true" Mask="false">45</Config>
-  <Config Name="SLOWBAN_MIN_SPEED" Target="SLOWBAN_MIN_SPEED" Default="50768" Mode="" Description="Minimum upload speed in bytes per second" Type="Variable" Display="always" Required="true" Mask="false">50768</Config>
+  <Config Name="SLOWBAN_MIN_SPEED" Target="SLOWBAN_MIN_SPEED" Default="100000" Mode="" Description="Minimum upload speed in bytes per second" Type="Variable" Display="always" Required="true" Mask="false">100000</Config>
   <Config Name="SLOWBAN_POLL_INTERVAL" Target="SLOWBAN_POLL_INTERVAL" Default="10" Mode="" Description="Polling interval in seconds" Type="Variable" Display="always" Required="true" Mask="false">10</Config>
   <Config Name="SLOWBAN_SUMMARY_INTERVAL" Target="SLOWBAN_SUMMARY_INTERVAL" Default="600" Mode="" Description="Summary log interval in seconds" Type="Variable" Display="always" Required="true" Mask="false">600</Config>
   <Config Name="SLOWBAN_CLEAR_PERIODICALLY" Target="SLOWBAN_CLEAR_PERIODICALLY" Default="0 */12 * * *" Mode="" Description="Cron schedule to clear all manual bans every 12 hours" Type="Variable" Display="always" Required="false" Mask="false">0 */12 * * *</Config>

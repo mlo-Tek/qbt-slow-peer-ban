@@ -29,18 +29,28 @@ This repository is a fork of [`TechClusterHQ/qbt-slowban`](https://github.com/Te
 
 ## Default settings
 
-| Setting | Default |
-|---|---:|
-| Warning after | 45 seconds |
-| Ban after | 90 seconds |
-| Minimum upload speed | 50,768 B/s |
-| Poll interval | 10 seconds |
-| Summary interval | 600 seconds |
-| Clear manual bans | Every 12 hours |
-| Log retention | 7 days |
-| Dry run | false |
+All settings are environment variables. Only `QBT_URL`, `QBT_USERNAME` and `QBT_PASSWORD` normally need to be set. Everything else is optional. Details and examples are in [Configuration reference](#configuration-reference).
 
-The minimum upload-speed value is expressed in **bytes per second**.
+| Variable | Built-in default | Meaning |
+|---|---:|---|
+| `QBT_URL` | `http://10.20.20.15:8080` | qBittorrent WebUI URL (always set this) |
+| `QBT_USERNAME` / `QBT_PASSWORD` | empty | qBittorrent login |
+| `SLOWBAN_MIN_SPEED` | `50768` B/s | Peers slower than this count as slow |
+| `SLOWBAN_WARN_TIME` | `90` s | Warning after this long below the minimum speed |
+| `SLOWBAN_THRESHOLD_TIME` | `180` s | Ban after this long below the minimum speed |
+| `SLOWBAN_POLL_INTERVAL` | `10` s | How often qBittorrent is checked |
+| `SLOWBAN_SUMMARY_INTERVAL` | `600` s | How often a status summary is logged |
+| `SLOWBAN_CLEAR_PERIODICALLY` | empty (off) | Cron schedule to clear the manual ban list |
+| `SLOWBAN_BANNED_PEERS` | empty | Peers kept banned when the list is cleared |
+| `SLOWBAN_LOG_LEVEL` | `INFO` | Minimum level that is logged |
+| `SLOWBAN_LOG_DIR` | `/logs` | Directory for the log files |
+| `SLOWBAN_LOG_RETENTION_DAYS` | `7` | Log files older than this are deleted |
+| `SLOWBAN_LOG_UNBAN_DETAILS` | `false` | Log every peer that is unbanned |
+| `SLOWBAN_COLOR_LOGS` | `true` | Colored console output |
+| `SLOWBAN_DRY_RUN` | `false` | Only log what would happen, never ban |
+| `SLOWBAN_STATE_FILE` | `/state/slowban_state.json` | Persistent state file |
+
+The Unraid template ships with warning after **45 s**, ban after **90 s** and the periodic unban set to `0 */12 * * *` (every 12 hours). The speed value is in **bytes per second**: `50768` is about 50 KB/s, `100000` is about 100 KB/s.
 
 ## Repository layout
 
@@ -127,47 +137,49 @@ Alternatively, Unraid users can run the Docker Compose file above via the Compos
 docker build -t qbt-slowban .
 ```
 
-## Important configuration variables
+## Configuration reference
 
 ### qBittorrent
 
-- `QBT_URL` — qBittorrent WebUI/API URL
-- `QBT_USERNAME` — qBittorrent username
-- `QBT_PASSWORD` — qBittorrent password
+- `QBT_URL` — address of the qBittorrent WebUI/API, e.g. `http://192.168.1.100:8080`.
+- `QBT_USERNAME`, `QBT_PASSWORD` — WebUI login.
 
 ### Slow-peer detection
 
-- `SLOWBAN_MIN_SPEED` — minimum upload speed in bytes per second
-- `SLOWBAN_WARN_TIME` — seconds below the threshold before a warning is logged
-- `SLOWBAN_THRESHOLD_TIME` — seconds below the threshold before the peer is banned
-- `SLOWBAN_POLL_INTERVAL` — polling interval in seconds
+A peer is *slow* when it downloads from you at more than 0 B/s but less than `SLOWBAN_MIN_SPEED`. Peers that receive nothing are ignored.
 
-`SLOWBAN_WARN_TIME` must be lower than `SLOWBAN_THRESHOLD_TIME`.
+- `SLOWBAN_MIN_SPEED` — speed limit in bytes per second. `100000` means about 100 KB/s.
+- `SLOWBAN_WARN_TIME` — seconds a peer must stay below the limit before a warning is logged.
+- `SLOWBAN_THRESHOLD_TIME` — seconds below the limit before the peer is banned. Must be higher than `SLOWBAN_WARN_TIME`.
+- `SLOWBAN_POLL_INTERVAL` — how often (seconds) qBittorrent is queried.
+
+Example: with `SLOWBAN_MIN_SPEED=100000`, `SLOWBAN_WARN_TIME=60` and `SLOWBAN_THRESHOLD_TIME=120`, a peer that stays below 100 KB/s gets a warning after 60 s and is banned after 120 s. If it speeds up above the limit (or stops downloading completely) in between, its timer is reset.
 
 ### Scheduled unban
 
-`SLOWBAN_CLEAR_PERIODICALLY` accepts a 5-field cron expression.
+- `SLOWBAN_CLEAR_PERIODICALLY` — 5-field cron expression (`minute hour day month weekday`) that clears the manual ban list so peers get a second chance. Empty means bans are never cleared automatically. Times use the container timezone (`TZ`).
 
-Default:
+  | Value | Runs |
+  |---|---|
+  | `0 */12 * * *` | at 00:00 and 12:00 |
+  | `0 4 * * *` | daily at 04:00 |
+  | `0 4 * * 0` | Sundays at 04:00 |
 
-```text
-0 */12 * * *
-```
-
-This runs at 00:00 and 12:00 according to the configured container timezone.
-
-`SLOWBAN_BANNED_PEERS` can contain comma-separated peers that should be kept permanently banned when the scheduled clear runs.
+- `SLOWBAN_BANNED_PEERS` — comma-separated list of peers that stay banned permanently. They are re-applied every time the list is cleared. Example: `SLOWBAN_BANNED_PEERS=203.0.113.5,198.51.100.7`.
 
 ### Logging
 
-- `SLOWBAN_LOG_LEVEL`
-- `SLOWBAN_LOG_DIR`
-- `SLOWBAN_LOG_RETENTION_DAYS`
-- `SLOWBAN_LOG_UNBAN_DETAILS`
-- `SLOWBAN_COLOR_LOGS`
-- `SLOWBAN_SUMMARY_INTERVAL`
+- `SLOWBAN_LOG_LEVEL` — minimum level that is written. Available levels, from most to least detailed: `DEBUG`, `INFO`, `WARN`, `BAN`, `UNBAN`, `ERROR`. Example: `WARN` hides routine `INFO` lines (startup, summaries) but still shows warnings, bans, unbans and errors.
+- `SLOWBAN_LOG_DIR` — directory inside the container where log files are written (default `/logs`). Map it to a host folder to keep the logs, e.g. `./logs:/logs`. Files are named like `slowban-2026-10-05_1400.log`, one per 2-hour time slot.
+- `SLOWBAN_LOG_RETENTION_DAYS` — log files older than this many days are deleted automatically. Example: `7` keeps one week of logs.
+- `SLOWBAN_LOG_UNBAN_DETAILS` — `true` logs every single peer that is unbanned during a scheduled clear. With `false` only a short summary line (how many were unbanned) is logged.
+- `SLOWBAN_COLOR_LOGS` — `true` colors the console output (warnings yellow, bans red, and so on). Set `false` if your log viewer shows raw color codes. Log files are never colored.
+- `SLOWBAN_SUMMARY_INTERVAL` — seconds between status summary lines. A summary shows the number of torrents, active and tracked slow peers, warnings, and total bans and unbans. Example: `600` logs one summary every 10 minutes.
 
-Log files are split into 2-hour time slots.
+### Other
+
+- `SLOWBAN_DRY_RUN` — `true` only logs what would be banned or unbanned and changes nothing in qBittorrent. Good for testing new limits.
+- `SLOWBAN_STATE_FILE` — where the tracking state is stored (default `/state/slowban_state.json`). Map `/state` to a host folder so it survives restarts.
 
 ## Security
 

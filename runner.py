@@ -15,7 +15,7 @@ _TORRENTS_INFO_FILTER = "active"
 def resilient_get(self: requests.Session, url: str, **kwargs: Any) -> requests.Response:
     """Retry transient qBittorrent GET failures once with a fresh connection.
 
-    The /torrents/info poll is limited to downloading-state torrents and is
+    The /torrents/info poll is limited to active torrents (downloading or uploading) and is
     intentionally forced onto a fresh TCP connection every time. This avoids
     transferring the full qBittorrent library on every Slowban poll and also
     avoids reused keep-alive connections that qBittorrent may reset.
@@ -56,7 +56,7 @@ requests.Session.get = resilient_get
 if __name__ == "__main__":
     slowban.log(
         "Optimized torrent polling enabled: qBittorrent filters /torrents/info "
-        "to downloading-state torrents before sending the response.",
+        "to active (downloading or uploading) torrents before sending the response.",
         "INFO",
     )
     slowban.main()
